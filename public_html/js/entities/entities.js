@@ -4,7 +4,10 @@ game.PlayerEntity = me.ObjectEntity.extend({
         settings.spritewidth = "72";
         settings.spriteheight = "97";
         this.parent(x, y, settings);
-                
+        
+        this.renderable.addAnimation("idle", [3]);
+        this.renderable.setCurrentAnimation("idle");
+        
         this.setVelocity(5, 20);
     },
     
