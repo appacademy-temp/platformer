@@ -22,7 +22,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
         else {
             this.vel.x = 0;
         }
-        
+
         var collision = this.collide();
         this.updateMovement();
         return true;
