@@ -3,6 +3,8 @@ game.PlayerEntity = me.ObjectEntity.extend({
         settings.image = "player1-spritesheet";
         settings.spritewidth = "72";
         settings.spriteheight = "97";
+        settings.width = 72;
+        settings.height = 97;
         this.parent(x, y, settings);
         
         this.collidable = true;
@@ -15,19 +17,17 @@ game.PlayerEntity = me.ObjectEntity.extend({
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
     },
     
-    update: function() {
+    update: function(deltaTime) {
         if(me.input.isKeyPressed("right")) {
             this.vel.x += this.accel.x * me.timer.tick;
         }
         else {
             this.vel.x = 0;
         }
-
-        var collision = this.collide();
+        
+        var collision = me.game.world.collide(this);
         this.updateMovement();
         return true;
-
-
     }
 });
 
@@ -36,11 +36,15 @@ game.LevelTrigger = me.ObjectEntity.extend({
         this.parent(x, y, settings);
         this.collidable = true;
         this.level = settings.level;
+        this.xSpawn = settings.xSpawn;
+        this.ySpawn = settings.ySpawn;
     },
     
     onCollision: function() {
         this.collidable = false;
-        me.levelDirector.loadLevel.defer(this.level);
-        me.state.current().resetPlayer.defer();
+        var x = this.xSpawn;
+        var y = this.ySpawn;
+        me.levelDirector.loadLevel(this.level);
+        me.state.current().resetPlayer(x, y);
     }
 });
